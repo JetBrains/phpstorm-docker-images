@@ -1,0 +1,7 @@
+FROM mysql/mysql-server:latest
+
+ENV MYSQL_USER=jetbrains
+ENV MYSQL_PASSWORD=jetbrains
+ENV MYSQL_ALLOW_EMPTY_PASSWORD="yes"
+ENV MYSQL_DATABASE=jetbrains
+ENV MYSQL_ROOT_PASSWORD=jetbrains

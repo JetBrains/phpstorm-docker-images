@@ -17,3 +17,9 @@ services:
     environment:
       #change the line below with your IP address
       XDEBUG_CONFIG: remote_host=192.168.2.108
+  mysql:
+      build: mysql
+      ports:
+        - "33306:3306"
+      volumes:
+        - ./data:/var/lib/mysql
