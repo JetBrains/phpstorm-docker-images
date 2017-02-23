@@ -1,7 +1,7 @@
 version: '2'
 services:
   sftp:
-    image: phpstorm/sft-server
+    image: phpstorm/sftp-server
     ports:
      - "3022:22"
     volumes:
