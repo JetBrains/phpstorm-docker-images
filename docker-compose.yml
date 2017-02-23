@@ -8,3 +8,12 @@ services:
      - /tmp:/home/jetbrains/upload
      - ~/.ssh/id_rsa.pub:/home/jetbrains/.ssh/keys/id_rsa.pub:ro
     command: jetbrains:jetbrains:1001
+  webserver:
+    image: php-71-apache-xdebug
+    ports:
+      - "80:80"
+    volumes:
+      - ./html:/var/www/html
+    environment:
+      #change the line below with your IP address
+      XDEBUG_CONFIG: remote_host=192.168.2.108
