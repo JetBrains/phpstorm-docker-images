@@ -1,0 +1,10 @@
+version: '2'
+services:
+  sftp:
+    image: phpstorm/sft-server
+    ports:
+     - "3022:22"
+    volumes:
+     - /tmp:/home/jetbrains/upload
+     - ~/.ssh/id_rsa.pub:/home/jetbrains/.ssh/keys/id_rsa.pub:ro
+    command: jetbrains:jetbrains:1001
