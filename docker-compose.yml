@@ -23,3 +23,26 @@ services:
         - "33306:3306"
       volumes:
         - ./data:/var/lib/mysql
+  ftp:
+    image: phpstorm/ftp
+    volumes:
+      - /tmp:/home/virtual/jetbrains/share
+    environment:
+      PASV_ADDRESS: 192.168.2.186
+      VSFTPD_USER_1: "jetbrains:jetbrains::"
+    ports:
+      - "21:21"
+      - "30000-30009:30000-30009"
+  ftps:
+    image: phpstorm/ftps
+    volumes:
+          - /tmp:/home/virtual/jetbrains/share
+    environment:
+    #change the line below with your IP address
+      PASV_ADDRESS: 192.168.2.108
+      VSFTPD_USER_1: "jetbrains:jetbrains::"
+      PASV_MIN_PORT: 30010
+      PASV_MAX_PORT: 30019
+    ports:
+      - "23:21"
+      - "30010-30019:30010-30019"
