@@ -1,7 +1,7 @@
 version: '2'
 services:
   sftp:
-    image: phpstorm/sftp-server
+    build: ./sftp-server
     ports:
      - "3022:22"
     volumes:
@@ -9,7 +9,7 @@ services:
      - ~/.ssh/id_rsa.pub:/home/jetbrains/.ssh/keys/id_rsa.pub:ro
     command: jetbrains:jetbrains:1001
   webserver:
-    image: phpstorm/php-71-apache-xdebug
+    build: ./php-71-apache-xdebug
     ports:
       - "80:80"
     volumes:
@@ -18,13 +18,13 @@ services:
       #change the line below with your IP address
       XDEBUG_CONFIG: remote_host=192.168.2.108
   mysql:
-      image: phpstorm/mysql
+      build: ./mysql
       ports:
         - "33306:3306"
       volumes:
         - ./data:/var/lib/mysql
   ftp:
-    image: phpstorm/ftp
+    build: ./ftp
     volumes:
       - /tmp:/home/virtual/jetbrains/share
     environment:
@@ -34,7 +34,7 @@ services:
       - "21:21"
       - "30000-30009:30000-30009"
   ftps:
-    image: phpstorm/ftps
+    build: ./ftps
     volumes:
           - /tmp:/home/virtual/jetbrains/share
     environment:
