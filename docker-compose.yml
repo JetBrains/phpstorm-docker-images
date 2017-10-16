@@ -57,15 +57,16 @@ services:
       #change the line below with your IP address
       PASV_ADDRESS: 192.168.2.118
   pro-ftpd:
-      build: ./proftpd
+      build:
+        context: ./proftpd
+        args:
+          #change the line below with your IP address
+          PASV_ADDRESS: 192.168.2.118
       volumes:
         - /tmp:/home/FTP-shared
       ports:
         - "25:21"
         - "30040-30049:30040-30049"
-      environment:
-        #change the line below with your IP address
-        PASV_ADDRESS: 192.168.2.118
       extra_hosts:
        - "moby:127.0.0.1"
 

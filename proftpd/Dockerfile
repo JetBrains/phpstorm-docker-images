@@ -13,6 +13,8 @@ RUN (echo jetbrains; echo jetbrains) | passwd userftp
 RUN mkdir /home/FTP-shared
 
 COPY proftpd.conf /etc/proftpd/
+
+ARG PASV_ADDRESS
 RUN echo "MasqueradeAddress $PASV_ADDRESS" >>  /etc/proftpd/proftpd.conf
 
 
