@@ -46,3 +46,14 @@ services:
     ports:
       - "23:21"
       - "30010-30019:30010-30019"
+  pure-ftpd:
+    build: ./pure-ftpd
+    volumes:
+      - /tmp:/home/ftpusers/jetbrains/
+    ports:
+      - "24:21"
+      - "30020-30029:30020-30029"
+    environment:
+      #change the line below with your IP address
+      PASV_ADDRESS: 192.168.2.118
+
