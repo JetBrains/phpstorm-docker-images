@@ -1,5 +1,5 @@
 FROM ubuntu:17.10
-MAINTAINER maxim.kolmakov@jetbrains.com
+
 RUN apt-get update && \
 apt-get install pure-ftpd openssl libpam-dev libcap2-dev libldap2-dev libmysqlclient-dev default-libmysqlclient-dev libpq-dev libssl-dev po-debconf dpkg-dev debhelper -y
 RUN mkdir /tmp/pure-ftpd/ && \
@@ -22,7 +22,6 @@ echo yes > ./conf/ProhibitDotFilesWrite && \
 echo yes > ./conf/CustomerProof && \
 echo '30020 30029' > ./conf/PassivePortRange && \
 echo ',21' > ./conf/Bind && \
-# Remove the line to get FTP
 echo '2' > ./conf/TLS
 
 RUN groupadd ftpgroup
