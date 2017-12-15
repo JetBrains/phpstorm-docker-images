@@ -17,7 +17,7 @@ krb-service currently has only Apache configured.
 krb-kdc credentials are:
 * Realm name: `krb` (should match the domain)
 * Realm DB password: `q1234`
-* The only user: `krbadmin/admin`:`q123` (It seems to be some kind of a convention that admin users should have this /admin appended).
+* The only user: `krbadmin/admin`:`q123` (It seems to be some kind of a convention that admin users should have this /admin appended)
 
 Usage
 -
@@ -26,8 +26,8 @@ First, run `docker-compose up`.
 
 Then, you need to call the service with a certain domain name, so add the following lines to your /etc/hosts
 ```
-10.17.18.1  kdc-krb.krb
-10.17.18.2  kdc-service.krb
+10.17.18.1  krb-kdc.krb
+10.17.18.2  krb-service.krb
 ```
 You also need to install and configure your Kerberos client, for Ubuntu it would be `apt-get install krb5-user krb5-config`.
 
