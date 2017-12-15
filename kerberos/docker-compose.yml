@@ -1,0 +1,39 @@
+version: '2'
+
+services:
+    krb-kdc:
+        image: krb-kdc:0.0.1
+        build: ./krb-kdc
+        container_name: krb-kdc
+        hostname: krb-kdc
+        domainname: krb
+        networks:
+            krb:
+                ipv4_address: 10.17.18.1
+        extra_hosts:
+          - "krb-service.krb:10.17.18.2"
+        command: bash -c "service krb5-kdc start && service krb5-admin-server start && tail -f /dev/null"
+
+    krb-service:
+        depends_on:
+          - krb-kdc
+        image: krb-service:0.0.1
+        build: ./krb-service
+        container_name: krb-service
+        hostname: krb-service
+        domainname: krb
+        networks:
+            krb:
+                ipv4_address: 10.17.18.2
+        extra_hosts:
+          - "krb-kdc.krb:10.17.18.1"
+        command: bash -c "bash /escripts/service4.sh && tail -f /dev/null"
+
+networks:
+    krb:
+         driver: bridge
+         ipam:
+             driver: default
+             config:
+              - subnet: 10.17.18.0/24
+                gateway: 10.17.18.254
