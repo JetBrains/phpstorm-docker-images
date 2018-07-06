@@ -2,7 +2,7 @@
 
 set timeout 120
 
-spawn kadmin -p krbadmin/admin -q "ktadd -k /etc/apache2/auth/apache2.keytab HTTP/krb-service.krb"
+spawn kadmin -p krbadmin/admin -q "ktadd -k /etc/krb5.keytab host/krb-service.krb@krb"
 
 expect "Password for krbadmin/admin@krb: "
 send -- "q123\r"
