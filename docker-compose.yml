@@ -11,7 +11,7 @@ services:
   webserver:
     build: ./php-71-apache-xdebug-26
     ports:
-      - "80:80"
+      - "6080:80"
     volumes:
       - ./html:/var/www/html
     environment:
@@ -69,4 +69,13 @@ services:
         - "30040-30049:30040-30049"
       extra_hosts:
        - "moby:127.0.0.1"
-
+  squid:
+    build: ./squid
+    container_name: squid
+    hostname: squid
+    ports:
+      # When connecting to services, use the real host:port, not the mapped ones
+      # e.g. webserver:80, not localhost:6080
+      - "6128:3128" # HTTP proxy with no authentication
+      - "6129:3129" # HTTP proxy with authentication, jetbrains:jetbrains
+    command: "squid -N -d1"
