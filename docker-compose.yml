@@ -9,7 +9,7 @@ services:
      - ~/.ssh/id_rsa.pub:/home/jetbrains/.ssh/keys/id_rsa.pub:ro
     command: jetbrains:jetbrains:1001
   webserver:
-    build: ./php-71-apache-xdebug-26
+    build: ./php-73-apache-xdebug-27
     ports:
       - "6080:80"
     volumes:
