@@ -8,7 +8,7 @@ RUN apt-get install openssl && \
 
 ADD proftpd.pem /etc/proftpd/proftpd.pem
 
-RUN useradd userftp -d /home/FTP-shared -s /bin/false
+RUN useradd userftp -u 1001 -d /home/FTP-shared -s /bin/false
 RUN (echo jetbrains; echo jetbrains) | passwd userftp
 RUN mkdir /home/FTP-shared
 

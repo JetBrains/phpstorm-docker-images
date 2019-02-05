@@ -25,7 +25,7 @@ echo ',21' > ./conf/Bind && \
 echo '2' > ./conf/TLS
 
 RUN groupadd ftpgroup
-RUN useradd -g ftpgroup -d /home/ftpusers -s /dev/null ftpuser
+RUN useradd -u 1001 -g ftpgroup -d /home/ftpusers -s /dev/null ftpuser
 
 ENV PUBLICHOST localhost
 
