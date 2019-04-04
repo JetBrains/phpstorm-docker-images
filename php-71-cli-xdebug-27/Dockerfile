@@ -4,5 +4,5 @@ MAINTAINER maxim.kolmakov@jetbrains.com
 
 # Install PECL extensions
 RUN docker-php-ext-install mysqli
-RUN pecl install xdebug-2.7.0RC1
+RUN pecl install xdebug-2.7.0
 RUN docker-php-ext-enable xdebug
