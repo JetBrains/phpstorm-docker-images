@@ -5,7 +5,7 @@ services:
     ports:
      - "3022:22"
     volumes:
-     - /tmp:/home/jetbrains/upload
+     - /tmp:/home/jetbrains
      - ~/.ssh/id_rsa.pub:/home/jetbrains/.ssh/keys/id_rsa.pub:ro
     command: jetbrains:jetbrains:1001
   sftp-ki: # Similar to sftp but only keyboard-interactive auth is allowed
@@ -13,7 +13,7 @@ services:
     ports:
      - "3122:22"
     volumes:
-     - /tmp:/home/jetbrains/upload
+     - /tmp:/home/jetbrains
     command: jetbrains:jetbrains:1001
   webserver:
     build: ./php-73-apache-xdebug-27
@@ -35,7 +35,7 @@ services:
     volumes:
       - /tmp:/home/virtual/jetbrains/share
     environment:
-      PASV_ADDRESS: 192.168.2.186
+      PASV_ADDRESS: 192.168.2.154
       VSFTPD_USER_1: "jetbrains:jetbrains::"
     ports:
       - "21:21"
@@ -46,7 +46,7 @@ services:
           - /tmp:/home/virtual/jetbrains/share
     environment:
     #change the line below with your IP address
-      PASV_ADDRESS: 192.168.2.108
+      PASV_ADDRESS: 192.168.2.154
       VSFTPD_USER_1: "jetbrains:jetbrains::"
       PASV_MIN_PORT: 30010
       PASV_MAX_PORT: 30019
@@ -62,13 +62,15 @@ services:
       - "30020-30029:30020-30029"
     environment:
       #change the line below with your IP address
-      PASV_ADDRESS: 192.168.2.118
+      PASV_ADDRESS: 192.168.2.154
   pro-ftpd:
       build:
         context: ./proftpd
         args:
           #change the line below with your IP address
-          PASV_ADDRESS: 192.168.2.118
+          PASV_ADDRESS: 172.27.208.148
+          USER_ID: 1000
+          PASSWD: jetbrains
       volumes:
         - /tmp:/home/FTP-shared
       ports:
