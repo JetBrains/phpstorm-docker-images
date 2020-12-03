@@ -1,5 +1,5 @@
-FROM php:7.4-apache
+FROM php:7.2-apache
 RUN docker-php-ext-install mysqli
 RUN pecl install xdebug-3.0.0
 RUN docker-php-ext-enable xdebug
-RUN echo "xdebug.mode=debug" >> /usr/local/etc/php/php.ini
+RUN echo "xdebug.remote_enable=1" >> /usr/local/etc/php/php.ini
