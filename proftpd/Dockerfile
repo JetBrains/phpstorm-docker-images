@@ -1,8 +1,8 @@
-FROM vipconsult/base:jessie
+FROM debian:stable
 
-RUN apt-get install proftpd openssl
-
-RUN apt-get install openssl && \
+RUN apt-get update && \
+    apt-get install -y openssl && \
+    apt-get install -y proftpd && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
