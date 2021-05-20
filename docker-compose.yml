@@ -22,8 +22,7 @@ services:
     volumes:
       - ./html:/var/www/html
     environment:
-      #change the line below with your IP address
-      XDEBUG_CONFIG: remote_host=192.168.2.108
+      XDEBUG_CONFIG: "client_host=host.docker.internal"
   mysql:
       build: ./mysql
       ports:
