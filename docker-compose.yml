@@ -8,6 +8,13 @@ services:
      - /tmp:/home/jetbrains/upload
      - ~/.ssh/id_rsa.pub:/home/jetbrains/.ssh/keys/id_rsa.pub:ro
     command: jetbrains:jetbrains:1001
+  sftp-no-password:
+    build: ./sftp-server-no-password
+    ports:
+      - "4022:22"
+    volumes:
+      - /tmp:/home/jetbrains/upload
+    command: jetbrains:1001
   webserver:
     build: ./php-71-apache-xdebug
     ports:
@@ -16,19 +23,19 @@ services:
       - ./html:/var/www/html
     environment:
       #change the line below with your IP address
-      XDEBUG_CONFIG: remote_host=192.168.2.108
+      XDEBUG_CONFIG: remote_host=172.27.208.185
   mysql:
-      build: ./mysql
-      ports:
-        - "33306:3306"
-      volumes:
-        - ./data:/var/lib/mysql
+    build: ./mysql
+    ports:
+      - "33306:3306"
+    volumes:
+      - ./data:/var/lib/mysql
   ftp:
     build: ./ftp
     volumes:
       - /tmp:/home/virtual/jetbrains/share
     environment:
-      PASV_ADDRESS: 192.168.2.186
+      PASV_ADDRESS: 172.27.208.185
       VSFTPD_USER_1: "jetbrains:jetbrains::"
     ports:
       - "21:21"
@@ -36,37 +43,50 @@ services:
   ftps:
     build: ./ftps
     volumes:
-          - /tmp:/home/virtual/jetbrains/share
+      - /tmp:/home/virtual/jetbrains/share
     environment:
-    #change the line below with your IP address
-      PASV_ADDRESS: 192.168.2.108
+      #change the line below with your IP address
+      PASV_ADDRESS: 172.27.208.185
       VSFTPD_USER_1: "jetbrains:jetbrains::"
       PASV_MIN_PORT: 30010
       PASV_MAX_PORT: 30019
     ports:
       - "23:21"
       - "30010-30019:30010-30019"
-  pure-ftpd:
-    build: ./pure-ftpd
-    volumes:
-      - /tmp:/home/ftpusers/jetbrains/
-    ports:
-      - "24:21"
-      - "30020-30029:30020-30029"
-    environment:
-      #change the line below with your IP address
-      PASV_ADDRESS: 192.168.2.118
+  #  pure-ftpd:
+  #    build: ./pure-ftpd
+  #    volumes:
+  #      - /tmp:/home/ftpusers/jetbrains/
+  #    ports:
+  #      - "24:21"
+  #      - "30020-30029:30020-30029"
+  #    environment:
+  #      #change the line below with your IP address
+  #      PASV_ADDRESS: 172.27.208.185
   pro-ftpd:
-      build:
-        context: ./proftpd
-        args:
-          #change the line below with your IP address
-          PASV_ADDRESS: 192.168.2.118
-      volumes:
-        - /tmp:/home/FTP-shared
-      ports:
-        - "25:21"
-        - "30040-30049:30040-30049"
-      extra_hosts:
-       - "moby:127.0.0.1"
+    build:
+      context: ./proftpd
+      args:
+        #change the line below with your IP address
+        PASV_ADDRESS: 172.27.208.185
+    volumes:
+      - /tmp:/home/FTP-shared
+    ports:
+      - "25:21"
+      - "30040-30049:30040-30049"
+    extra_hosts:
+      - "moby:127.0.0.1"
+  pro-ftpd13:
+    build:
+      context: ./proftpd13
+      args:
+        #change the line below with your IP address
+        PASV_ADDRESS: 172.27.208.185
+    volumes:
+      - /tmp:/home/FTP-shared
+    ports:
+      - "27:21"
+      - "30050-30059:30050-30059"
+    extra_hosts:
+      - "moby:127.0.0.1"
 
