@@ -6,7 +6,7 @@ RUN apt-get update && \
     wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg && \
     echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list && \
     apt-get update && \
-    apt-get -y install php7.3 php7.4 composer
+    apt-get -y install php7.3 php7.4 composer rsync
 RUN mkdir -p /var/run/sshd
 
 COPY entrypoint /
