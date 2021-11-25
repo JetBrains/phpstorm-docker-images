@@ -87,3 +87,11 @@ services:
       - "6128:3128" # HTTP proxy with no authentication
       - "6129:3129" # HTTP proxy with authentication, jetbrains:jetbrains
     command: "squid -N -d1"
+  webdav:
+    build: ./webdav
+    container_name: webdav
+    hostname: webdav
+    volumes:
+      - .:/var/www/webdav
+    ports:
+      - "6180:80" # jetbrains@localhost:6080/webdav
