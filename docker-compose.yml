@@ -1,11 +1,11 @@
-version: '2'
+version: '3.2'
 services:
   sftp:
     build: ./sftp-server
     ports:
      - "3022:22"
     volumes:
-     - /tmp:/home/jetbrains/upload
+     - /tmp:/home/jetbrains
      - ~/.ssh/id_rsa.pub:/home/jetbrains/.ssh/keys/id_rsa.pub:ro
     command: jetbrains:jetbrains:1001
   sftp-no-password:
@@ -15,15 +15,21 @@ services:
     volumes:
       - /tmp:/home/jetbrains/upload
     command: jetbrains:1001
-  webserver:
-    build: ./php-71-apache-xdebug
+  sftp-ki: # Similar to sftp but only keyboard-interactive auth is allowed
+    build: ./sftp-server-ki
     ports:
-      - "80:80"
+     - "3122:22"
+    volumes:
+     - /tmp:/home/jetbrains
+    command: jetbrains:jetbrains:1001
+  webserver:
+    build: ./php-80-apache-xdebug-30
+    ports:
+      - "6080:80"
     volumes:
       - ./html:/var/www/html
     environment:
-      #change the line below with your IP address
-      XDEBUG_CONFIG: remote_host=192.168.2.108
+      XDEBUG_CONFIG: "client_host=host.docker.internal"
   mysql:
       build: ./mysql
       ports:
@@ -35,7 +41,7 @@ services:
     volumes:
       - /tmp:/home/virtual/jetbrains/share
     environment:
-      PASV_ADDRESS: 192.168.2.186
+      PASV_ADDRESS: 192.168.2.154
       VSFTPD_USER_1: "jetbrains:jetbrains::"
     ports:
       - "21:21"
@@ -46,7 +52,7 @@ services:
           - /tmp:/home/virtual/jetbrains/share
     environment:
     #change the line below with your IP address
-      PASV_ADDRESS: 192.168.2.108
+      PASV_ADDRESS: 192.168.2.154
       VSFTPD_USER_1: "jetbrains:jetbrains::"
       PASV_MIN_PORT: 30010
       PASV_MAX_PORT: 30019
@@ -62,13 +68,15 @@ services:
       - "30020-30029:30020-30029"
     environment:
       #change the line below with your IP address
-      PASV_ADDRESS: 192.168.2.118
+      PASV_ADDRESS: 192.168.2.154
   pro-ftpd:
       build:
         context: ./proftpd
         args:
           #change the line below with your IP address
-          PASV_ADDRESS: 192.168.2.118
+          PASV_ADDRESS: 172.27.208.148
+          USER_ID: 1000
+          PASSWD: jetbrains
       volumes:
         - /tmp:/home/FTP-shared
       ports:
@@ -76,4 +84,21 @@ services:
         - "30040-30049:30040-30049"
       extra_hosts:
        - "moby:127.0.0.1"
-
+  squid:
+    build: ./squid
+    container_name: squid
+    hostname: squid
+    ports:
+      # When connecting to services, use the real host:port, not the mapped ones
+      # e.g. webserver:80, not localhost:6080
+      - "6128:3128" # HTTP proxy with no authentication
+      - "6129:3129" # HTTP proxy with authentication, jetbrains:jetbrains
+    command: "squid -N -d1"
+  webdav:
+    build: ./webdav
+    container_name: webdav
+    hostname: webdav
+    volumes:
+      - .:/var/www/webdav
+    ports:
+      - "6180:80" # jetbrains@localhost:6080/webdav

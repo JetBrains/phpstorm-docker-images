@@ -12,7 +12,7 @@ The infrastructure consists of two containers:
 * krb-kdc (Kerberos Key Distribution Center)
 * krb-service (Service available via Kerberos)
 
-krb-service currently has only Apache configured.
+krb-service currently has Apache and SSH configured.
 
 krb-kdc credentials are:
 * Realm name: `krb` (should match the domain)
@@ -35,6 +35,7 @@ You'll be asked for a default realm name (`krb`), a KDC server (`krb-kdc.krb`) a
 
 Finally, you can obtain a ticket. Run `kinit krbadmin/admin` and enter the password. You can list tickets with `klist`.
 
-Next, you need to add `.krb` as a trusted URI for your browser (Google it).
+To test HTTP Kerberos authentication, you need to add `.krb` as a trusted URI for your browser (Google it).
+Now you can open http://krb-service.krb and get the index page.
 
-That's basically all, now you can open http://krb-service.krb and get the index page using the Kerberos authentication.
+To test SSH Kerberos authentication, just run `ssh root@krb-service.krb`, it should connect with no password asked, and also a new ticket (`host/krb-service.krb@krb`) should appear in `klist`.

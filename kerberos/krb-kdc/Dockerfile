@@ -8,14 +8,16 @@ RUN apt-get update
 # Add the Expect scripts to the server
 RUN apt-get install -y expect
 RUN mkdir /escripts
-ADD ./escripts/kdc*.sh /escripts/
+ADD ./escripts/*.sh /escripts/
 
 # Install krb5-kdc and krb5-admin-server, configure the default realm
-RUN expect /escripts/kdc1.sh
+RUN expect /escripts/install-krb.sh
+
 # Create a new realm and set the DB password
-RUN expect /escripts/kdc2.sh
+RUN expect /escripts/create-realm.sh
+
 # Create a new admin user and set its password
-RUN expect /escripts/kdc3.sh
+RUN expect /escripts/add-admin.sh
 
 # Make the admin user an actual admin
 RUN sed -i "\$akrbadmin/admin *" /etc/krb5kdc/kadm5.acl
