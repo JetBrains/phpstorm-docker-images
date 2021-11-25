@@ -8,6 +8,13 @@ services:
      - /tmp:/home/jetbrains
      - ~/.ssh/id_rsa.pub:/home/jetbrains/.ssh/keys/id_rsa.pub:ro
     command: jetbrains:jetbrains:1001
+  sftp-no-password:
+    build: ./sftp-server-no-password
+    ports:
+      - "4022:22"
+    volumes:
+      - /tmp:/home/jetbrains/upload
+    command: jetbrains:1001
   sftp-ki: # Similar to sftp but only keyboard-interactive auth is allowed
     build: ./sftp-server-ki
     ports:

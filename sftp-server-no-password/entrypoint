@@ -1,0 +1,63 @@
+#!/bin/bash
+set -e
+export DEBIAN_FRONTEND=noninteractive
+
+userConfPath="/etc/sftp-users.conf"
+userConfFinalPath="/var/run/sftp-users.conf"
+
+function createUser() {
+    IFS=':' read -a param <<< $@
+    user="${param[0]}"
+    uid="${param[1]}"
+
+    if [ -z "$user" ]; then
+        echo "FATAL: You must at least provide a username."
+        exit 1
+    fi
+
+    if $(cat /etc/passwd | cut -d: -f1 | grep -q "^$user:"); then
+        echo "WARNING: User \"$user\" already exists. Skipping."
+        return 0
+    fi
+
+    useraddOptions="--no-user-group"
+
+    if [ -n "$uid" ]; then
+        useraddOptions="$useraddOptions --non-unique --uid $uid"
+    fi
+
+    useradd $useraddOptions $user
+    # https://unix.stackexchange.com/questions/56765/creating-a-user-without-a-password/472968#472968
+    echo "$user:U6aMy0wojraho" | chpasswd -e
+}
+
+
+# Create users only on first run
+if [ ! -f "$userConfFinalPath" ]; then
+
+    # Append users from arguments to final config
+    for user in "$@"; do
+        echo "$user" >> "$userConfFinalPath"
+    done
+
+    # Check that we have users in config
+    if [ "$(cat "$userConfFinalPath" | wc -l)" == 0 ]; then
+        echo "FATAL: No users provided!"
+        printHelp
+        exit 3
+    fi
+
+    # Import users from final conf file
+    while IFS= read -r user || [[ -n "$user" ]]; do
+        createUser "$user"
+    done < "$userConfFinalPath"
+
+    # Generate unique ssh keys for this container, if needed
+    if [ ! -f /etc/ssh/ssh_host_ed25519_key ]; then
+        ssh-keygen -t ed25519 -f /etc/ssh/ssh_host_ed25519_key -N ''
+    fi
+    if [ ! -f /etc/ssh/ssh_host_rsa_key ]; then
+        ssh-keygen -t rsa -b 4096 -f /etc/ssh/ssh_host_rsa_key -N ''
+    fi
+fi
+exec /usr/sbin/sshd -D -e
