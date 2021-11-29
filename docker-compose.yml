@@ -101,4 +101,4 @@ services:
     volumes:
       - .:/var/www/webdav
     ports:
-      - "6180:80" # jetbrains@localhost:6080/webdav
+      - "6180:80" # jetbrains@localhost:6180/webdav
