@@ -58,9 +58,9 @@ function createUser() {
         cat /home/$user/.ssh/keys/* >> /home/$user/.ssh/authorized_keys
         chown $user /home/$user/.ssh/authorized_keys
         chmod 600 /home/$user/.ssh/authorized_keys
-        chown $user /home/$user
-        chmod 755 /home/$user
     fi
+    chown $user /home/$user
+    chmod 755 /home/$user
 
     # Make sure dirs exists and has correct permissions
     if [ -n "$dir" ]; then
