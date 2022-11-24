@@ -1,4 +1,5 @@
 FROM php:5.6-apache
+COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
 RUN docker-php-ext-install mysqli
 # Needed as a workaround for
 # https://github.com/JetBrains/phpstorm-docker-images/issues/5

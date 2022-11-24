@@ -1,4 +1,5 @@
 FROM php:7.1
+COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
 
 MAINTAINER maxim.kolmakov@jetbrains.com
 
