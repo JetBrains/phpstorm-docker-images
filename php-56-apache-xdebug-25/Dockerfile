@@ -1,6 +1,7 @@
 FROM php:5.6-apache
 COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
-RUN docker-php-ext-install mysqli
+RUN apt-get update && apt-get -y install libzip-dev libicu-dev
+RUN docker-php-ext-install mysqli zip intl
 # Needed as a workaround for
 # https://github.com/JetBrains/phpstorm-docker-images/issues/5
 RUN BEFORE_PWD=$(pwd) \
