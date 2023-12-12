@@ -23,7 +23,7 @@ services:
      - /tmp:/home/jetbrains
     command: jetbrains:jetbrains:1001
   webserver:
-    build: ./php-81-apache-xdebug-31
+    build: ./php-83-apache
     ports:
       - "6080:80"
     volumes:
